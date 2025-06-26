@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components"; // Se importa keyframes
 import { BtnSave } from "../moleculas/BtnSave";
 import { v } from "../../styles/variables";
 import { useAuthStore } from "../../store/AuthStore";
@@ -19,7 +19,7 @@ export function LoginTemplate() {
   const { setTheme } = useContext(ThemeContext);
   useEffect(() => {
     setTheme("light");
-  }, []);
+  }, [setTheme]); // Se agrega setTheme como dependencia para evitar warnings
 
   const { signInWithEmail } = useAuthStore();
   const [state, setState] = useState(false);
@@ -45,11 +45,11 @@ export function LoginTemplate() {
   return (
     <Container>
       <div className="contentLogo">
-        <img src={logo}></img>
+        <img src={logo} alt="Logo StockPRO" />
         <span>StockPRO</span>
       </div>
       <div className="bannerlateral">
-        <img src={carrito}></img>
+        <img src={carrito} alt="Ilustración de carrito de compras" />
       </div>
 
       <div className="contentCard">
@@ -57,10 +57,9 @@ export function LoginTemplate() {
           {state && <RegistrarAdmin setState={() => setState(!state)} />}
           <Titulo>StockPRO</Titulo>
           {stateInicio && (
-            <TextoStateInicio>datos incorrectos</TextoStateInicio>
+            <TextoStateInicio>Datos incorrectos</TextoStateInicio>
           )}
           <span className="ayuda">
-            {" "}
             Puedes crear una cuenta nueva ó <br></br>solicitar a tu empleador
             una. <MdOutlineInfo />
           </span>
@@ -75,7 +74,7 @@ export function LoginTemplate() {
                   required: true,
                 })}
               />
-              <label className="form__label">email</label>
+              <label className="form__label">Email</label>
               {errors.correo?.type === "required" && <p>Campo requerido</p>}
             </InputText>
             <InputText icono={<v.iconopass />}>
@@ -87,11 +86,11 @@ export function LoginTemplate() {
                   required: true,
                 })}
               />
-              <label className="form__label">pass</label>
+              <label className="form__label">Contraseña</label>
               {errors.pass?.type === "required" && <p>Campo requerido</p>}
             </InputText>
             <ContainerBtn>
-              <BtnSave titulo="Iniciar" bgcolor="#007BFF" /> {/* CAMBIO DE COLOR */}
+              <BtnSave titulo="Iniciar" bgcolor="#007BFF" />
               <BtnSave
                 funcion={() => setState(!state)}
                 titulo="Crear cuenta"
@@ -105,136 +104,141 @@ export function LoginTemplate() {
     </Container>
   );
 }
+
+// MEJORA: Animación de fondo sutil
+const gradientAnimation = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
 const Container = styled.div`
-  background-size: cover;
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: #262626;
+  /* MEJORA: Fondo con gradiente animado para un look más dinámico */
+  background: linear-gradient(-45deg, #1A202C, #2D3748, #4A5568, #2D3748);
+  background-size: 400% 400%;
+  animation: ${gradientAnimation} 15s ease infinite;
+  
   @media ${Device.tablet} {
     grid-template-columns: 1fr 2fr;
   }
+
   .contentLogo {
     position: absolute;
-    top: 15px;
+    top: 20px;
+    left: 20px;
     font-weight: 700;
+    font-size: 1.5rem;
     display: flex;
-    left: 15px;
     align-items: center;
     color: #fff;
+    gap: 10px;
+    z-index: 2;
 
     img {
       width: 50px;
+      height: 50px;
     }
-  }
-  .cuadros {
-    transition: cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    bottom: 0;
-    transition: 0.6s;
   }
 
   .bannerlateral {
-    background-color: #007BFF; /* <-- CAMBIO DE COLOR */
+    /* MEJORA: Gradiente para el banner lateral */
+    background: linear-gradient(to top, #005f9e, #007BFF);
     height: 100vh;
-    display: flex;
+    display: none; /* Se oculta en móvil */
     align-items: center;
     justify-content: center;
+    
+    @media ${Device.tablet} {
+      display: flex; /* Se muestra en tablet y superior */
+    }
+
     img {
-      width: 80%;
+      width: 70%;
+      max-width: 400px;
+      /* MEJORA: Animación más sutil */
+      animation: flotar 3s ease-in-out infinite alternate;
     }
   }
+
   .contentCard {
-    grid-column: 2;
-    background-color: #ffffff;
-    background-size: cover;
-    z-index: 100;
+    grid-column: 1; /* Ocupa toda la pantalla en móvil */
+    background-color: rgba(255, 255, 255, 0.95); /* MEJORA: Ligera transparencia */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque para el fondo */
     position: relative;
-    gap: 30px;
+    gap: 20px;
     display: flex;
     padding: 20px;
-    box-shadow: 8px 5px 18px 3px rgba(0, 0, 0, 0.35);
-    justify-content: center;
-    width: auto;
     height: 100%;
     width: 100%;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center; /* Centrado vertical */
+
+    @media ${Device.tablet} {
+      grid-column: 2; /* Ocupa la segunda columna en tablet */
+      justify-content: space-between; /* Espacio para el footer */
+    }
+
     .card {
-      padding-top: 80px;
+      padding: 20px;
+      border-radius: 15px;
       width: 100%;
-      @media ${Device.laptop} {
-        width: 50%;
-      }
+      max-width: 400px; /* Ancho máximo para el formulario */
     }
-    .version {
-      color: #727272;
-      text-align: start;
-    }
-    .contentImg {
-      width: 100%;
-      display: flex;
-      justify-content: center;
 
-      img {
-        width: 40%;
-
-        animation: flotar 1.5s ease-in-out infinite alternate;
-      }
-    }
     .frase {
-      color: #007BFF; /* <-- CAMBIO DE COLOR */
-      font-size: 1.5rem;
-      font-weight: 700;
+      color: #0056b3; /* Azul más oscuro para la frase */
+      font-size: 1.2rem;
+      font-weight: 500;
       margin-bottom: 30px;
     }
+
     .ayuda {
       position: absolute;
-      top: 15px;
-      right: 15px;
-      color: #8d8d8d;
-      font-size: 15px;
-      font-weight: 500;
-    }
-    &:hover {
-      .contentsvg {
-        top: -100px;
-        opacity: 1;
-      }
-      .cuadros {
-        transform: rotate(37deg) rotateX(5deg) rotateY(12deg) rotate(3deg)
-          skew(2deg) skewY(1deg) scaleX(1.2) scaleY(1.2);
-        color: red;
-      }
+      top: 20px;
+      right: 20px;
+      color: #6c757d;
+      font-size: 14px;
+      font-weight: 400;
     }
   }
+
+  /* MEJORA: Animación de flotar más suave */
   @keyframes flotar {
     0% {
-      transform: translate(0, 0px);
-    }
-    50% {
-      transform: translate(0, 15px);
+      transform: translateY(0px);
     }
     100% {
-      transform: translate(0, -0px);
+      transform: translateY(-20px);
     }
   }
 `;
-const Titulo = styled.span`
-  font-size: 3rem;
+
+const Titulo = styled.h1` /* Cambiado a h1 por semántica */
+  font-size: 2.5rem;
   font-weight: 700;
+  color: #1C3F5F;
+  margin-bottom: 8px;
 `;
+
 const ContainerBtn = styled.div`
-  margin-top: 15px;
+  margin-top: 25px;
   display: flex;
   justify-content: center;
+  gap: 15px; /* Espacio entre botones */
 `;
+
 const TextoStateInicio = styled.p`
-  color: #fc7575;
+  color: #D9534F; /* Un rojo más estándar para errores */
+  background-color: rgba(217, 83, 79, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-weight: 500;
 `;

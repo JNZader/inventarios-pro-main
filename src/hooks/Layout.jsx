@@ -8,12 +8,15 @@ import { Device } from "../styles/breackpoints";
 import { SpinnerLoader } from "../components/moleculas/SpinnerLoader";
 import { ErrorMolecula } from "../components/moleculas/ErrorMolecula";
 import { useState } from "react";
+import { v } from "../styles/variables"; // Importar variables para consistencia
 
 export function Layout({children}){
   
   const { mostrarUsuarios,idusuario,mostrarpermisos } = useUsuariosStore();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true); // MEJORA: Inicia abierta por defecto en desktop
   const {mostrarEmpresa} = useEmpresaStore()
+
+  // Las queries de React Query se mantienen igual
   const { data:datausuarios, isLoading, error } = useQuery({
     queryKey: ["mostrar usuarios"],
     queryFn: mostrarUsuarios,
@@ -27,7 +30,8 @@ export function Layout({children}){
   if(error){
     return <ErrorMolecula mensaje={error.message}/>
   }
-    return(<Container className={sidebarOpen ? "active" : ""}>
+    return(
+      <Container className={sidebarOpen ? "active" : ""}>
         <section className="ContentSidebar">
           <Sidebar
             state={sidebarOpen}
@@ -40,25 +44,33 @@ export function Layout({children}){
         <ContainerBody>
             {children}
         </ContainerBody>
-      </Container>)
+      </Container>
+    )
 }
 
 const Container = styled.main`
   display: grid;
   grid-template-columns: 1fr;
   background-color: ${({ theme }) => theme.bgtotal};
+  min-height: 100vh; // Asegura que el layout ocupe toda la altura de la pantalla
+  
   .ContentSidebar {
     display: none;
   }
   .ContentMenuambur {
     display: block;
-    position: absolute;
+    position: fixed; // MEJORA: Fija el menú hamburguesa para que no se mueva con el scroll
+    top: 15px;
     left: 20px;
+    z-index: 101; // Se asegura que esté por encima del contenido
   }
+
   @media ${Device.tablet} {
-    grid-template-columns: 65px 1fr;
+    /* MEJORA: Transición suave para la expansión/contracción de la sidebar */
+    transition: grid-template-columns 0.3s ease-in-out; 
+    grid-template-columns: ${v.sidebarWidthInitial}; /* Usa variables para el ancho */
     &.active {
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: ${v.sidebarWidth};
     }
     .ContentSidebar {
       display: initial;
@@ -67,20 +79,15 @@ const Container = styled.main`
       display: none;
     }
   }
-  .ContentRoutes {
-    grid-column: 1;
-    width: 100%;
-    @media ${Device.tablet} {
-      grid-column: 2;
-    }
-  }
 `;
 
 const ContainerBody = styled.div `
   grid-column: 1;
   width: 100%;
+  /* MEJORA: Añade un padding global a todas las páginas */
+  padding: ${v.lgSpacing}; 
+  
   @media ${Device.tablet}{
     grid-column: 2;
   }
-
 `

@@ -7,7 +7,6 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import styled from "styled-components";
-import { Colorcontent } from "../../atomos/Colorcontent";
 import { ContentAccionesTabla } from "../ContentAccionesTabla";
 import { Paginacion } from "../tablas/Paginacion";
 import { useProductosStore } from "../../../store/ProductosStore";
@@ -16,6 +15,7 @@ import { ColorcontentTable } from "../../atomos/ColorContentTable";
 import Swal from "sweetalert2";
 import { FaArrowsAltV } from "react-icons/fa";
 import { useState } from "react";
+import { Device } from "../../../styles/breackpoints";
 
 export function TablaProductos({
   data,
@@ -31,7 +31,8 @@ export function TablaProductos({
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Esta registro no se permite modificar ya que es valor por defecto.",
+        text: "Este registro no se permite modificar ya que es valor por defecto.",
+        confirmButtonColor: v.colorError,
       });
       return;
     }
@@ -39,108 +40,80 @@ export function TablaProductos({
     setdataSelect(data);
     setAccion("Editar");
   };
+
   const eliminar = (p) => {
     if (p.descripcion === "Generica") {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Este registro no se permite eliminar ya que es valor por defecto.",
+        confirmButtonColor: v.colorError,
       });
       return;
     }
     Swal.fire({
-      title: "¿Estás seguro(a)(e)?",
+      title: "¿Estás seguro(a)?",
       text: "Una vez eliminado, ¡no podrá recuperar este registro!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, eliminar",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: v.colorError,
+      cancelButtonColor: "#6c757d",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await eliminarproductos({ id: p.id });
       }
     });
   };
+
   const columns = [
     {
       accessorKey: "descripcion",
-      header: "Descripcion",
-      cell: (info) => (
-        <td data-title="Descripcion" className="ContentCell">
-          <span>{info.getValue()}</span>
-        </td>
-      ),
+      header: "Descripción",
+      cell: (info) => <span>{info.getValue()}</span>,
     },
     {
       accessorKey: "stock",
       header: "Stock",
-      enableSorting: false,
-      cell: (info) => (
-        <td data-title="Stock" className="ContentCell">
-          <span>{info.getValue()}</span>
-        </td>
-      ),
+      cell: (info) => <span>{info.getValue()}</span>,
     },
     {
       accessorKey: "precioventa",
-      header: "P.venta",
-      enableSorting: false,
-      cell: (info) => (
-        <td data-title="P.venta" className="ContentCell">
-          <span>{info.getValue()}</span>
-        </td>
-      ),
+      header: "P. Venta",
+      cell: (info) => <span>{info.row.original.simbolomoneda} {info.getValue()}</span>,
     },
     {
       accessorKey: "preciocompra",
-      header: "P.compra",
-      enableSorting: false,
-      cell: (info) => (
-        <td data-title="P.compra" className="ContentCell">
-          <span>{info.getValue()}</span>
-        </td>
-      ),
+      header: "P. Compra",
+      cell: (info) => <span>{info.row.original.simbolomoneda} {info.getValue()}</span>,
     },
     {
       accessorKey: "categoria",
-      header: "Categoria",
-      enableSorting: false,
+      header: "Categoría",
       cell: (info) => (
-        <td data-title="Categoria" className="ContentCell">
-          <ColorcontentTable
-            $color={info.row.original.color}
-            className="contentCategoria"
-          >
-            {info.getValue()}
-          </ColorcontentTable>
-        </td>
+        <ColorcontentTable $color={info.row.original.color}>
+          {info.getValue()}
+        </ColorcontentTable>
       ),
     },
     {
       accessorKey: "marca",
       header: "Marca",
-      enableSorting: false,
-      cell: (info) => (
-        <td data-title="Marca" className="ContentCell">
-          <span>{info.getValue()}</span>
-        </td>
-      ),
+      cell: (info) => <span>{info.getValue()}</span>,
     },
     {
       accessorKey: "acciones",
-      header: "",
-      enableSorting: false,
+      header: "Acciones",
       cell: (info) => (
-        <td className="ContentCell">
-          <ContentAccionesTabla
-            funcionEditar={() => editar(info.row.original)}
-            funcionEliminar={() => eliminar(info.row.original)}
-          />
-        </td>
+        <ContentAccionesTabla
+          funcionEditar={() => editar(info.row.original)}
+          funcionEliminar={() => eliminar(info.row.original)}
+        />
       ),
     },
   ];
+
   const table = useReactTable({
     data,
     columns,
@@ -148,47 +121,58 @@ export function TablaProductos({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 5, // Mostrar 5 filas por página
+      },
+    },
   });
+
   return (
     <Container>
-      <table className="responsive-table">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.column.columnDef.header}
-                  {header.column.getCanSort() && (
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      <FaArrowsAltV />
-                    </span>
-                  )}
-                  {
-                    {
-                      asc: " 🔼",
-                      desc: " 🔽",
-                    }[header.column.getIsSorted()]
-                  }
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((item) => (
-            <tr key={item.id}>
-              {item.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="table-responsive">
+        <table className="responsive-table">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id}>
+                    <div className="header-content">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {header.column.getCanSort() && (
+                        <span
+                          className="sort-icon"
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          <FaArrowsAltV />
+                        </span>
+                      )}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted()] ?? null}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Paginacion
         table={table}
         irinicio={() => table.setPageIndex(0)}
@@ -199,144 +183,74 @@ export function TablaProductos({
     </Container>
   );
 }
-const Container = styled.div`
-  position: relative;
 
-  margin: 5% 3%;
-  @media (min-width: ${v.bpbart}) {
-    margin: 2%;
+// MEJORA: Estilos modernos y limpios para la tabla y su contenedor.
+const Container = styled.div`
+  background-color: ${({ theme }) => theme.bgcards};
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+  
+  .table-responsive {
+    overflow-x: auto; /* Permite scroll horizontal en pantallas pequeñas */
   }
-  @media (min-width: ${v.bphomer}) {
-    margin: 2em auto;
-    /* max-width: ${v.bphomer}; */
-  }
+  
   .responsive-table {
     width: 100%;
-    margin-bottom: 1.5em;
-    border-spacing: 0;
-    @media (min-width: ${v.bpbart}) {
-      font-size: 0.9em;
-    }
-    @media (min-width: ${v.bpmarge}) {
-      font-size: 1em;
-    }
+    border-collapse: collapse;
+    
     thead {
-      position: absolute;
-
-      padding: 0;
-      border: 0;
-      height: 1px;
-      width: 1px;
-      overflow: hidden;
-      @media (min-width: ${v.bpbart}) {
-        position: relative;
-        height: auto;
-        width: auto;
-        overflow: auto;
-      }
+      background-color: ${({ theme }) => theme.bgAlpha};
       th {
-        border-bottom: 2px solid rgba(115, 115, 115, 0.32);
-        font-weight: normal;
-        text-align: center;
+        padding: 16px;
+        font-weight: 600;
+        text-align: left;
         color: ${({ theme }) => theme.text};
-        &:first-of-type {
-          text-align: center;
+        border-bottom: 2px solid ${({ theme }) => theme.bg4};
+        
+        .header-content {
+          display: flex;
+          align-items: center;
+          gap: 8px;
         }
-      }
-    }
-    tbody,
-    tr,
-    th,
-    td {
-      display: block;
-      padding: 0;
-      text-align: left;
-      white-space: normal;
-    }
-    tr {
-      @media (min-width: ${v.bpbart}) {
-        display: table-row;
-      }
-    }
-
-    th,
-    td {
-      padding: 0.5em;
-      vertical-align: middle;
-      @media (min-width: ${v.bplisa}) {
-        padding: 0.75em 0.5em;
-      }
-      @media (min-width: ${v.bpbart}) {
-        display: table-cell;
-        padding: 0.5em;
-      }
-      @media (min-width: ${v.bpmarge}) {
-        padding: 0.75em 0.5em;
-      }
-      @media (min-width: ${v.bphomer}) {
-        padding: 0.75em;
-      }
-    }
-    tbody {
-      @media (min-width: ${v.bpbart}) {
-        display: table-row-group;
-      }
-      tr {
-        margin-bottom: 1em;
-        @media (min-width: ${v.bpbart}) {
-          display: table-row;
-          border-width: 1px;
-        }
-        &:last-of-type {
-          margin-bottom: 0;
-        }
-        &:nth-of-type(even) {
-          @media (min-width: ${v.bpbart}) {
-            background-color: rgba(78, 78, 78, 0.12);
+        .sort-icon {
+          cursor: pointer;
+          transition: color 0.2s;
+          &:hover {
+            color: ${({ theme }) => theme.primary};
           }
         }
       }
-      th[scope="row"] {
-        @media (min-width: ${v.bplisa}) {
-          border-bottom: 1px solid rgba(161, 161, 161, 0.32);
-        }
-        @media (min-width: ${v.bpbart}) {
-          background-color: transparent;
-          text-align: center;
-          color: ${({ theme }) => theme.text};
-        }
-      }
-      .ContentCell {
-        text-align: right;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 50px;
-
-        border-bottom: 1px solid rgba(161, 161, 161, 0.32);
-        @media (min-width: ${v.bpbart}) {
-          justify-content: center;
+    }
+    
+    tbody {
+      tr {
+        transition: background-color 0.2s ease-in-out;
+        border-bottom: 1px solid ${({ theme }) => theme.bg4};
+        
+        &:last-of-type {
           border-bottom: none;
         }
+
+        &:hover {
+          background-color: ${({ theme }) => theme.bgAlpha};
+        }
       }
+      
       td {
-        text-align: right;
-        @media (min-width: ${v.bpbart}) {
-          border-bottom: 1px solid rgba(161, 161, 161, 0.32);
-          text-align: center;
-        }
-      }
-      td[data-title]:before {
-        content: attr(data-title);
-        float: left;
-        font-size: 0.8em;
-        @media (min-width: ${v.bplisa}) {
-          font-size: 0.9em;
-        }
-        @media (min-width: ${v.bpbart}) {
-          content: none;
+        padding: 15px 16px;
+        vertical-align: middle;
+        text-align: left;
+        color: ${({ theme }) => theme.text};
+        font-size: 0.9em;
+
+        /* Estilo para la píldora de categoría */
+        .contentCategoria {
+          font-weight: 500;
+          padding: 6px 12px;
         }
       }
     }
   }
 `;
+

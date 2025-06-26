@@ -1,134 +1,169 @@
 import {
-    useReactTable,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    flexRender,
-  } from "@tanstack/react-table";
-  import styled from "styled-components";
- 
-  import {Colorcontent} from "../../atomos/Colorcontent"
-  import {ContentAccionesTabla} from "../../organismos/ContentAccionesTabla";
-  import {Paginacion} from "../tablas/Paginacion"
-  import {useCategoriasStore} from "../../../store/CategoriasStore"
-  import {useMarcaStore} from "../../../store/MarcaStore"
-  import {v} from "../../../styles/variables"
-  import Swal from "sweetalert2";
-  import { FaArrowsAltV } from "react-icons/fa";
-  import { useState } from "react";
-  export function TablaCategorias({
-    data,
-    SetopenRegistro,
-    setdataSelect,
-    setAccion,
-  }) {
-    const [pagina, setPagina] = useState(1);
-    const { eliminarcategorias } = useCategoriasStore();
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  flexRender,
+} from "@tanstack/react-table";
+import styled from "styled-components";
+import { ContentAccionesTabla } from "../../organismos/ContentAccionesTabla";
+import { Paginacion } from "../tablas/Paginacion";
+import { useCategoriasStore } from "../../../store/CategoriasStore";
+import { v } from "../../../styles/variables";
+import Swal from "sweetalert2";
+import { FaArrowsAltV } from "react-icons/fa";
+import { useState } from "react";
+
+// MEJORA: Componente para mostrar el color de forma más visual
+const ColorDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   
-    const editar = (data) => {
-      if (data.descripcion === "General") {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Esta registro no se permite modificar ya que es valor por defecto.",
-        });
-        return;
-      }
-      SetopenRegistro(true);
-      setdataSelect(data);
-      setAccion("Editar");
-    };
-    const eliminar = (p) => {
-      if (p.descripcion === "General") {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Este registro no se permite eliminar ya que es valor por defecto.",
-        });
-        return;
-      }
+  .color-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid ${({ theme }) => theme.bg4};
+  }
+
+  span {
+    font-weight: 500;
+  }
+`;
+
+
+export function TablaCategorias({
+  data,
+  SetopenRegistro,
+  setdataSelect,
+  setAccion,
+}) {
+  const [pagina, setPagina] = useState(1);
+  const { eliminarcategorias } = useCategoriasStore();
+
+  const editar = (data) => {
+    if (data.descripcion === "General") {
       Swal.fire({
-        title: "¿Estás seguro(a)(e)?",
-        text: "Una vez eliminado, ¡no podrá recuperar este registro!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          await eliminarcategorias({ id: p.id });
-        }
+        icon: "error",
+        title: "Oops...",
+        text: "Este registro no se permite modificar ya que es valor por defecto.",
+        confirmButtonColor: v.colorError,
       });
-    };
-    const columns = [
-      {
-        accessorKey: "descripcion",
-        header: "Descripcion",
-        cell: (info) =><td data-title="Descripcion" className="ContentCell">
-          <span >{info.getValue()}</span>
-        </td> 
-      },
-      {
-        accessorKey: "color",
-        header: "Color",
-        cell: (info) =><td data-title="Color" className="ContentCell">
-          <Colorcontent $color={info.getValue()} $alto="25px" $ancho="25px"/>
-          
-        </td> 
-      },
-      {
-        accessorKey: "acciones",
-        header: "",
-        enableSorting:false,
-        cell: (info) => (
-          <td className="ContentCell">
-            <ContentAccionesTabla
-              funcionEditar={() => editar(info.row.original)}
-              funcionEliminar={() => eliminar(info.row.original)}
-            />
-          </td>
-        ),
-      },
-    ];
-    const table = useReactTable({
-      data,
-      columns,
-      getCoreRowModel: getCoreRowModel(),
-      getFilteredRowModel: getFilteredRowModel(),
-      getSortedRowModel: getSortedRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
+      return;
+    }
+    SetopenRegistro(true);
+    setdataSelect(data);
+    setAccion("Editar");
+  };
+
+  const eliminar = (p) => {
+    if (p.descripcion === "General") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Este registro no se permite eliminar ya que es valor por defecto.",
+        confirmButtonColor: v.colorError,
+      });
+      return;
+    }
+    Swal.fire({
+      title: "¿Estás seguro(a)?",
+      text: "Una vez eliminado, ¡no podrá recuperar este registro!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: v.colorError,
+      cancelButtonColor: "#6c757d",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await eliminarcategorias({ id: p.id });
+      }
     });
-    return (
-      <Container>
+  };
+
+  const columns = [
+    {
+      accessorKey: "descripcion",
+      header: "Descripción",
+      cell: (info) => <span>{info.getValue()}</span>,
+    },
+    {
+      accessorKey: "color",
+      header: "Color",
+      cell: (info) => (
+        // MEJORA: Usar el nuevo componente para mostrar el color
+        <ColorDisplay>
+          <span className="color-dot" style={{ backgroundColor: info.getValue() }} />
+          <span>{info.getValue()}</span>
+        </ColorDisplay>
+      ),
+      enableSorting: false,
+    },
+    {
+      accessorKey: "acciones",
+      header: "Acciones",
+      cell: (info) => (
+        <ContentAccionesTabla
+          funcionEditar={() => editar(info.row.original)}
+          funcionEliminar={() => eliminar(info.row.original)}
+        />
+      ),
+    },
+  ];
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 5, // Mostrar 5 filas por página
+      },
+    },
+  });
+
+  return (
+    <Container>
+      <div className="table-responsive">
         <table className="responsive-table">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th key={header.id}>
-                    {header.column.columnDef.header}
-                    {header.column.getCanSort() && (
-                      <span style={{cursor:"pointer"}} onClick={header.column.getToggleSortingHandler()}>
-                        <FaArrowsAltV />
-                      </span>
-                    )}
-                    {
-                      {
-                        asc:" 🔼",
-                        desc:" 🔽"
-                      }[header.column.getIsSorted()]
-                    }
+                    <div className="header-content">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {header.column.getCanSort() && (
+                        <span
+                          className="sort-icon"
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          <FaArrowsAltV />
+                        </span>
+                      )}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted()] ?? null}
+                    </div>
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((item) => (
-              <tr key={item.id}>
-                {item.getVisibleCells().map((cell) => (
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
                   <td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
@@ -137,151 +172,79 @@ import {
             ))}
           </tbody>
         </table>
-        <Paginacion table={table} irinicio = {()=>table.setPageIndex(0)}
-        pagina = {table.getState().pagination.pageIndex+1}
+      </div>
+      <Paginacion
+        table={table}
+        irinicio={() => table.setPageIndex(0)}
+        pagina={table.getState().pagination.pageIndex + 1}
         setPagina={setPagina}
-        maximo={table.getPageCount()}/>
-      </Container>
-    );
+        maximo={table.getPageCount()}
+      />
+    </Container>
+  );
+}
+
+const Container = styled.div`
+  background-color: ${({ theme }) => theme.bgcards};
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+
+  .table-responsive {
+    overflow-x: auto;
   }
-  const Container = styled.div`
-    position: relative;
-  
-    margin: 5% 3%;
-    @media (min-width: ${v.bpbart}) {
-      margin: 2%;
-    }
-    @media (min-width: ${v.bphomer}) {
-      margin: 2em auto;
-      /* max-width: ${v.bphomer}; */
-    }
-    .responsive-table {
-      width: 100%;
-      margin-bottom: 1.5em;
-      border-spacing: 0;
-      @media (min-width: ${v.bpbart}) {
-        font-size: 0.9em;
-      }
-      @media (min-width: ${v.bpmarge}) {
-        font-size: 1em;
-      }
-      thead {
-        position: absolute;
-  
-        padding: 0;
-        border: 0;
-        height: 1px;
-        width: 1px;
-        overflow: hidden;
-        @media (min-width: ${v.bpbart}) {
-          position: relative;
-          height: auto;
-          width: auto;
-          overflow: auto;
-        }
-        th {
-          border-bottom: 2px solid rgba(115, 115, 115, 0.32);
-          font-weight: normal;
-          text-align: center;
-          color: ${({ theme }) => theme.text};
-          &:first-of-type {
-            text-align: center;
-          }
-        }
-      }
-      tbody,
-      tr,
-      th,
-      td {
-        display: block;
-        padding: 0;
+
+  .responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      background-color: ${({ theme }) => theme.bgAlpha};
+      th {
+        padding: 16px;
+        font-weight: 600;
         text-align: left;
-        white-space: normal;
-      }
-      tr {
-        @media (min-width: ${v.bpbart}) {
-          display: table-row;
-        }
-      }
-  
-      th,
-      td {
-        padding: 0.5em;
-        vertical-align: middle;
-        @media (min-width: ${v.bplisa}) {
-          padding: 0.75em 0.5em;
-        }
-        @media (min-width: ${v.bpbart}) {
-          display: table-cell;
-          padding: 0.5em;
-        }
-        @media (min-width: ${v.bpmarge}) {
-          padding: 0.75em 0.5em;
-        }
-        @media (min-width: ${v.bphomer}) {
-          padding: 0.75em;
-        }
-      }
-      tbody {
-        @media (min-width: ${v.bpbart}) {
-          display: table-row-group;
-        }
-        tr {
-          margin-bottom: 1em;
-          @media (min-width: ${v.bpbart}) {
-            display: table-row;
-            border-width: 1px;
-          }
-          &:last-of-type {
-            margin-bottom: 0;
-          }
-          &:nth-of-type(even) {
-            @media (min-width: ${v.bpbart}) {
-              background-color: rgba(78, 78, 78, 0.12);
-            }
-          }
-        }
-        th[scope="row"] {
-          @media (min-width: ${v.bplisa}) {
-            border-bottom: 1px solid rgba(161, 161, 161, 0.32);
-          }
-          @media (min-width: ${v.bpbart}) {
-            background-color: transparent;
-            text-align: center;
-            color: ${({ theme }) => theme.text};
-          }
-        }
-        .ContentCell {
-          text-align: right;
+        color: ${({ theme }) => theme.text};
+        border-bottom: 2px solid ${({ theme }) => theme.bg4};
+        
+        .header-content {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          height: 50px;
-  
-          border-bottom: 1px solid rgba(161, 161, 161, 0.32);
-          @media (min-width: ${v.bpbart}) {
-            justify-content: center;
-            border-bottom: none;
-          }
+          gap: 8px;
         }
-        td {
-          text-align: right;
-          @media (min-width: ${v.bpbart}) {
-            border-bottom: 1px solid rgba(161, 161, 161, 0.32);
-            text-align: center;
-          }
-        }
-        td[data-title]:before {
-          content: attr(data-title);
-          float: left;
-          font-size: 0.8em;
-          @media (min-width: ${v.bplisa}) {
-            font-size: 0.9em;
-          }
-          @media (min-width: ${v.bpbart}) {
-            content: none;
+        .sort-icon {
+          cursor: pointer;
+          transition: color 0.2s;
+          &:hover {
+            color: ${({ theme }) => theme.primary};
           }
         }
       }
     }
-  `;
+
+    tbody {
+      tr {
+        transition: background-color 0.2s ease-in-out;
+        border-bottom: 1px solid ${({ theme }) => theme.bg4};
+
+        &:last-of-type {
+          border-bottom: none;
+        }
+
+        &:hover {
+          background-color: ${({ theme }) => theme.bgAlpha};
+        }
+      }
+
+      td {
+        padding: 15px 16px;
+        vertical-align: middle;
+        text-align: left;
+        color: ${({ theme }) => theme.text};
+        font-size: 0.9em;
+
+        /* Se elimina el estilo .color-indicator porque ya no se usa */
+      }
+    }
+  }
+`;
