@@ -3,29 +3,30 @@ import { Header } from "../organismos/Header";
 import { TablaMarca } from "../organismos/tablas/TablaMarca";
 import { Title } from "../atomos/Title";
 import { useMarcaStore } from "../../store/MarcaStore";
-import {v} from "../../styles/variables"
+import { v } from "../../styles/variables"
 import { Btnfiltro } from "../moleculas/BtnFiltro";
-import {ContentFiltro} from "../atomos/ContentFiltro"
-import {Buscador} from "../organismos/Buscador"
+import { ContentFiltro } from "../atomos/ContentFiltro"
+import { Buscador } from "../organismos/Buscador"
 import { RegistrarMarca } from "../organismos/formularios/RegistrarMarca";
 import { useState } from "react";
-export function MarcaTemplate({data}) {
+
+export function MarcaTemplate({ data }) {
   const [state, setState] = useState(false);
   const [dataSelect, setdataSelect] = useState([]);
   const [accion, setAccion] = useState("");
   const [openRegistro, SetopenRegistro] = useState(false);
-  const nuevoRegistro=()=>{
+  const nuevoRegistro = () => {
     SetopenRegistro(!openRegistro);
     setAccion("Nuevo")
     setdataSelect([])
   }
-  const {setBuscador} = useMarcaStore()
+  const { setBuscador } = useMarcaStore()
   return (
     <Container>
       {
-        openRegistro &&  <RegistrarMarca dataSelect={dataSelect} accion={accion} onClose={()=>SetopenRegistro(!openRegistro)}/>
+        openRegistro && <RegistrarMarca dataSelect={dataSelect} accion={accion} onClose={() => SetopenRegistro(!openRegistro)} />
       }
-     
+
       <header className="header">
         <Header
           stateConfig={{ state: state, setState: () => setState(!state) }}
@@ -36,18 +37,18 @@ export function MarcaTemplate({data}) {
           <Title>
             Marcas
           </Title>
-           <Btnfiltro funcion={nuevoRegistro} bgcolor="#f6f3f3"
+          <Btnfiltro funcion={nuevoRegistro} bgcolor="#f6f3f3"
             textcolor="#353535"
-            icono={<v.agregar/>}/>
+            icono={<v.agregar />} />
         </ContentFiltro>
-       
+
       </section>
       <section className="area2">
-        <Buscador setBuscador={setBuscador}/>
+        <Buscador setBuscador={setBuscador} />
       </section>
       <section className="main">
         <TablaMarca data={data} SetopenRegistro={SetopenRegistro}
-        setdataSelect={setdataSelect} setAccion={setAccion}/>
+          setdataSelect={setdataSelect} setAccion={setAccion} />
       </section>
     </Container>
   );

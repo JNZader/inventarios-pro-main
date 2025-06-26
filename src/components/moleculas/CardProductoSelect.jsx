@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export function CardProductoSelect ({text1, text2}) {
+export function CardProductoSelect({ text1, text2 }) {
     return (<Container>
         <span className="descripcion">{text1}</span>
         <span className="stock"> stock actual: {text2}</span>
@@ -8,7 +8,7 @@ export function CardProductoSelect ({text1, text2}) {
 }
 
 
-const Container = styled.div `
+const Container = styled.div`
 margin-top: 10px;
 display: flex;
 flex-direction: column;
@@ -19,15 +19,11 @@ padding: 10px;
 margin-bottom: 10px;
     .descripcion {
         color: #1fee61;
-        font-weight: 700;
-
-    
+        font-weight: 700;    
     }
 
     .stock {
-        color: ${({theme})=> theme.text}
+        color: ${({ theme }) => theme.text}
     
     }
-
-
 `

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import styled, { keyframes } from "styled-components"; // Se importa keyframes
+import styled, { keyframes } from "styled-components";
 import { BtnSave } from "../moleculas/BtnSave";
 import { v } from "../../styles/variables";
 import { useAuthStore } from "../../store/AuthStore";
@@ -19,7 +19,7 @@ export function LoginTemplate() {
   const { setTheme } = useContext(ThemeContext);
   useEffect(() => {
     setTheme("light");
-  }, [setTheme]); // Se agrega setTheme como dependencia para evitar warnings
+  }, [setTheme]);
 
   const { signInWithEmail } = useAuthStore();
   const [state, setState] = useState(false);
@@ -45,8 +45,8 @@ export function LoginTemplate() {
   return (
     <Container>
       <div className="contentLogo">
-        <img src={logo} alt="Logo StockPRO" />
-        <span>StockPRO</span>
+        <img src={logo} alt="Logo FiveStock" />
+        <span>FiveStock</span>
       </div>
       <div className="bannerlateral">
         <img src={carrito} alt="Ilustración de carrito de compras" />
@@ -55,7 +55,7 @@ export function LoginTemplate() {
       <div className="contentCard">
         <div className="card">
           {state && <RegistrarAdmin setState={() => setState(!state)} />}
-          <Titulo>StockPRO</Titulo>
+          <Titulo>FiveStock</Titulo>
           {stateInicio && (
             <TextoStateInicio>Datos incorrectos</TextoStateInicio>
           )}
@@ -105,7 +105,6 @@ export function LoginTemplate() {
   );
 }
 
-// MEJORA: Animación de fondo sutil
 const gradientAnimation = keyframes`
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -119,7 +118,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* MEJORA: Fondo con gradiente animado para un look más dinámico */
   background: linear-gradient(-45deg, #1A202C, #2D3748, #4A5568, #2D3748);
   background-size: 400% 400%;
   animation: ${gradientAnimation} 15s ease infinite;
@@ -147,29 +145,27 @@ const Container = styled.div`
   }
 
   .bannerlateral {
-    /* MEJORA: Gradiente para el banner lateral */
     background: linear-gradient(to top, #005f9e, #007BFF);
     height: 100vh;
-    display: none; /* Se oculta en móvil */
+    display: none;
     align-items: center;
     justify-content: center;
     
     @media ${Device.tablet} {
-      display: flex; /* Se muestra en tablet y superior */
+      display: flex;
     }
 
     img {
       width: 70%;
       max-width: 400px;
-      /* MEJORA: Animación más sutil */
       animation: flotar 3s ease-in-out infinite alternate;
     }
   }
 
   .contentCard {
-    grid-column: 1; /* Ocupa toda la pantalla en móvil */
-    background-color: rgba(255, 255, 255, 0.95); /* MEJORA: Ligera transparencia */
-    backdrop-filter: blur(5px); /* Efecto de desenfoque para el fondo */
+    grid-column: 1;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
     position: relative;
     gap: 20px;
     display: flex;
@@ -178,22 +174,22 @@ const Container = styled.div`
     width: 100%;
     align-items: center;
     flex-direction: column;
-    justify-content: center; /* Centrado vertical */
+    justify-content: center;
 
     @media ${Device.tablet} {
-      grid-column: 2; /* Ocupa la segunda columna en tablet */
-      justify-content: space-between; /* Espacio para el footer */
+      grid-column: 2;
+      justify-content: space-between;
     }
 
     .card {
       padding: 20px;
       border-radius: 15px;
       width: 100%;
-      max-width: 400px; /* Ancho máximo para el formulario */
+      max-width: 400px;
     }
 
     .frase {
-      color: #0056b3; /* Azul más oscuro para la frase */
+      color: #0056b3;
       font-size: 1.2rem;
       font-weight: 500;
       margin-bottom: 30px;
@@ -209,7 +205,6 @@ const Container = styled.div`
     }
   }
 
-  /* MEJORA: Animación de flotar más suave */
   @keyframes flotar {
     0% {
       transform: translateY(0px);
@@ -220,7 +215,7 @@ const Container = styled.div`
   }
 `;
 
-const Titulo = styled.h1` /* Cambiado a h1 por semántica */
+const Titulo = styled.h1`
   font-size: 2.5rem;
   font-weight: 700;
   color: #1C3F5F;
@@ -231,11 +226,11 @@ const ContainerBtn = styled.div`
   margin-top: 25px;
   display: flex;
   justify-content: center;
-  gap: 15px; /* Espacio entre botones */
+  gap: 15px;
 `;
 
 const TextoStateInicio = styled.p`
-  color: #D9534F; /* Un rojo más estándar para errores */
+  color: #D9534F;
   background-color: rgba(217, 83, 79, 0.1);
   padding: 10px;
   border-radius: 8px;

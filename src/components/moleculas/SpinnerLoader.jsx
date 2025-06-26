@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import {HashLoader} from "react-spinners"
+import { HashLoader } from "react-spinners"
 export function SpinnerLoader() {
   return (<Container>
-<HashLoader color="#FFF140" size={200}/>
+    <HashLoader color="#FFF140" size={200} />
   </Container>);
 }
-const Container =styled.div`
+const Container = styled.div`
    display: flex;
   justify-content: center;
   align-items: center;

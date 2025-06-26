@@ -1,11 +1,11 @@
 import styled from "styled-components";
-export function Mensaje({state}) {
-  return (<Container className={state?"":"visible"}>
-<span className="icono">💀</span>
-<span className="texto">No tienes permisos a este modulo</span>
+export function Mensaje({ state }) {
+  return (<Container className={state ? "" : "visible"}>
+    <span className="icono">💀</span>
+    <span className="texto">No tienes permisos a este modulo</span>
   </Container>);
 }
-const Container =styled.div`
+const Container = styled.div`
    position: absolute;
   z-index: 10;
   background: rgba(26, 9, 9, 0.9);

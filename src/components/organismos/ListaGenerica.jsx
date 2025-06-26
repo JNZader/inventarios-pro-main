@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { BtnCerrar } from "../atomos/BtnCerrar";
 import { Device } from "../../styles/breackpoints";
+
 export function ListaGenerica({ data, setState, funcion, scroll, bottom }) {
   const seleccionar = (p) => {
     funcion(p);
@@ -9,7 +10,7 @@ export function ListaGenerica({ data, setState, funcion, scroll, bottom }) {
   return (
     <Container $scroll={scroll} $bottom={bottom}>
       <section className="contentClose">
-        <BtnCerrar funcion={setState}/>
+        <BtnCerrar funcion={setState} />
       </section>
       <section className="contentItems">
         {data?.map((item, index) => {
@@ -24,6 +25,7 @@ export function ListaGenerica({ data, setState, funcion, scroll, bottom }) {
     </Container>
   );
 }
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,6 +55,7 @@ const Container = styled.div`
     }
   }
 `;
+
 const ItemContainer = styled.div`
   gap: 10px;
   display: flex;

@@ -1,63 +1,55 @@
 import styled from "styled-components";
 import {
-
-    LinksArray,
-    SecondarylinksArray,
-
-
+  LinksArray,
+  SecondarylinksArray,
 } from "../../utils/dataEstatica";
 import { ToggleTema } from "./ToggleTema";
 import { SidebarCard } from "./sidebar/SidebarCard"
 import { v } from "../../styles/variables"
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+
 export function MenuHambur() {
-    const [click, setClick] = useState(false);
-    return (
-        <Container>
-        <NavBar>
-            <section>
-                <HamburgerMenu onClick={()=>setClick(!click)}>
-                   
-                    <label className={click?"toggle active":"toggle"}>
-                        <div className="bars" id="bar1"></div>
-                        <div className="bars" id="bar2"></div>
-                        <div className="bars" id="bar3"></div>
-                    </label>
-                </HamburgerMenu>
-            </section>
+  const [click, setClick] = useState(false);
+  return (
+    <Container>
+      <NavBar>
+        <section>
+          <HamburgerMenu onClick={() => setClick(!click)}>
 
-            <Menu $click={click.toString()}>
-                {LinksArray.map(({ icon, label, to }) => (
-                    <div onClick={() => setClick(!click)} className="LinkContainer" key={label}>
-                        <NavLink to={to} className="Links">
-                            <div className="Linkicon">{icon}</div>
-                            <span>{label}</span>
-                        </NavLink>
-                    </div>
-                ))}
+            <label className={click ? "toggle active" : "toggle"}>
+              <div className="bars" id="bar1"></div>
+              <div className="bars" id="bar2"></div>
+              <div className="bars" id="bar3"></div>
+            </label>
+          </HamburgerMenu>
+        </section>
 
-                <Divider />
-
-                {SecondarylinksArray.map(({ icon, label, to }) => (
-                    <div className="LinkContainer" key={label} onClick={() => setClick(!click)} >
-                        <NavLink to={to} className="Links">
-                            <div className="Linkicon">{icon}</div>
-                            <span>{label}</span>
-                        </NavLink>
-                    </div>
-                ))}
-
-                <ToggleTema />
-
-                <Divider />
-            </Menu>
-
-        </NavBar>
+        <Menu $click={click.toString()}>
+          {LinksArray.map(({ icon, label, to }) => (
+            <div onClick={() => setClick(!click)} className="LinkContainer" key={label}>
+              <NavLink to={to} className="Links">
+                <div className="Linkicon">{icon}</div>
+                <span>{label}</span>
+              </NavLink>
+            </div>
+          ))}
+          <Divider />
+          {SecondarylinksArray.map(({ icon, label, to }) => (
+            <div className="LinkContainer" key={label} onClick={() => setClick(!click)} >
+              <NavLink to={to} className="Links">
+                <div className="Linkicon">{icon}</div>
+                <span>{label}</span>
+              </NavLink>
+            </div>
+          ))}
+          <ToggleTema />
+          <Divider />
+        </Menu>
+      </NavBar>
     </Container>
-    );
+  );
 }
-
 
 const Container = styled.div`
         background-color: ${(props) => props.theme.body};
@@ -68,19 +60,15 @@ const NavBar = styled.nav`
          justify-content: space-between;
           align-items: center;
           height: 100vh;
-
-
     `
 
 const HamburgerMenu = styled.span`
     position:fixed;
     top:2rem;
     z-index:100;
-
         #checkbox {
   display: none;
 }
-
 .toggle {
   position: relative;
   width: 30px;
@@ -95,12 +83,9 @@ const HamburgerMenu = styled.span`
   &.active{
    transition-duration: .5s;
   transform: rotate(180deg);
-  .bars {
- 
+  .bars { 
     position:absolute;
     transition-duration: 0.5s;
-
-
 }
     #bar2 {
   transform: scaleX(0);
@@ -117,15 +102,14 @@ const HamburgerMenu = styled.span`
   width: 100%;
   transform: rotate(-45deg);
   transition-duration: .5s;
-}
-    
+}    
   }
 }
 
 .bars {
   width: 100%;
   height: 4px;
-  background-color: ${({theme})=>theme.text};
+  background-color: ${({ theme }) => theme.text};
   border-radius: 4px;
 }
 
@@ -135,23 +119,12 @@ const HamburgerMenu = styled.span`
 
 #bar1,#bar3 {
   width: 70%;
-}
-
-
-
-
-
-
-
-
-
-
-    
-    `
+}    
+`
 
 const Menu = styled.div`
 display: flex;
- align-items: center;
+align-items: center;
 list-style:none;
 z-index: 10;
 flex-direction: column;
@@ -164,7 +137,7 @@ bottom: 0;
 width: 100vw;
  background-color: ${(props) => `rgba(${props.theme.bodyRgba},0.85)`};
  backdrop-filter: blur(3px);
- transform: ${(props)=>
+ transform: ${(props) =>
     props.$click == "true" ? "translateY(0)" : "translateY(1000%)"};
     transition: all 0.3s ease;
     .LinkContainer{
@@ -185,15 +158,8 @@ width: 100vw;
                 font-size: 25px;
             }
          }
-
-
         }
     }
-
-
-
-
-
   `
 const Divider = styled.div`
   height: 1px;

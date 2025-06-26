@@ -26,7 +26,7 @@ function App() {
       <ThemeContext.Provider value={{ theme, setTheme }}>
         <ThemeProvider theme={themeStyle}>
           <AuthContextProvider>
-            <MyRoutes/>
+            <MyRoutes />
             {/*pathname == "/login" ? (
               <Login />
             ) : (

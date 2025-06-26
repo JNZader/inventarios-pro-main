@@ -29,10 +29,7 @@ export function MyRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<ProtectedRoute accessBy="non-authenticated">
-
         <Login />
-
-
       </ProtectedRoute>} />
       <Route path="/" element={<ProtectedRoute accessBy="authenticated">
         <Layout>
@@ -52,13 +49,11 @@ export function MyRoutes() {
         </Layout>
       </ProtectedRoute>} />
 
-
       <Route path="/configurar/categorias" element={<ProtectedRoute accessBy="authenticated">
         <Layout>
           <Categorias />
         </Layout>
       </ProtectedRoute>} />
-
 
       <Route path="/configurar/productos" element={<ProtectedRoute accessBy="authenticated">
         <Layout>
@@ -71,7 +66,6 @@ export function MyRoutes() {
           <Usuarios />
         </Layout>
       </ProtectedRoute>} />
-      
 
       <Route path="/kardex" element={<ProtectedRoute accessBy="authenticated">
         <Layout>
@@ -85,20 +79,12 @@ export function MyRoutes() {
         </Layout>
       </ProtectedRoute>}
       >
-
         <Route path="stock-actual-todos" element={<StockActualTodos />} />
         <Route path="stock-actual-por-producto" element={<StockActualPorProducto />} />
         <Route path="stock-bajo-minimo" element={<StockBajoMinimo />} />
         <Route path="kardex-entradas-salidas" element={<KardexEntradaSalida />} />
         <Route path="inventario-valorado" element={<StockInventarioValorado />} />
       </Route>
-
-
-
-
-
-
-
     </Routes>
   );
 }

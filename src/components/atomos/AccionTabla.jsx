@@ -1,11 +1,11 @@
 import styled from "styled-components";
-export function AccionTabla({funcion,icono,color,fontSize}) {
+export function AccionTabla({ funcion, icono, color, fontSize }) {
   return (<Container onClick={funcion} $color={color} $fontSize={fontSize} >
-{icono}
+    {icono}
   </Container>);
 }
-const Container =styled.span`
-  color:${(props)=>props.$color};
-  font-size:${(props)=>props.$fontSize};
+const Container = styled.span`
+  color:${(props) => props.$color};
+  font-size:${(props) => props.$fontSize};
   cursor: pointer;
 `

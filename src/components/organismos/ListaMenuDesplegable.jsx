@@ -1,8 +1,6 @@
 import styled from "styled-components";
-
 import { Icono } from "../atomos/Icono";
 import {v} from "../../styles/variables"
-
 
 export function ListaMenuDesplegable({ data, top, funcion }) {
   return (
@@ -18,6 +16,7 @@ export function ListaMenuDesplegable({ data, top, funcion }) {
     </Container>
   );
 }
+
 const Container = styled.div`
   padding: 10px;
   display: flex;
@@ -29,6 +28,7 @@ const Container = styled.div`
   box-shadow: ${() => v.boxshadowGray};
   z-index: 1;
 `;
+
 const ItemsDesplegable = styled.div`
   cursor: pointer;
   padding: 8px;

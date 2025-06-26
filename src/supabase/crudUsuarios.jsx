@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
-import {supabase} from "./supabase.config"
+import { supabase } from "./supabase.config"
 import { ObtenerIdAuthSupabase } from "./globalSupabase";
+
 export const InsertarUsuarios = async (p) => {
   const { data, error } = await supabase
     .from("usuarios")
@@ -16,6 +17,7 @@ export const InsertarUsuarios = async (p) => {
   }
   if (data) return data;
 };
+
 export const MostrarUsuarios = async () => {
   const idAuthSupabase = await ObtenerIdAuthSupabase();
   const { error, data } = await supabase
@@ -28,14 +30,15 @@ export const MostrarUsuarios = async () => {
     return data;
   }
 };
+
 export const MostrarUsuariosTodos = async (p) => {
   const { error, data } = await supabase.rpc("mostrarpersonal", p);
   if (data) {
     return data;
   }
 };
+
 export async function EliminarUsuarios(p) {
- 
   const { error } = await supabase
     .from("usuarios")
     .delete()
@@ -43,8 +46,8 @@ export async function EliminarUsuarios(p) {
   if (error) {
     alert("Error al eliminar", error.message);
   }
-
 }
+
 export async function EditarUsuarios(p) {
   const { error } = await supabase
     .from("usuarios")
@@ -53,15 +56,16 @@ export async function EditarUsuarios(p) {
   if (error) {
     alert("Error al editar Usuarios", error.message);
   }
-
 }
+
 export async function BuscarUsuarios(p) {
-  const { data} = await supabase.rpc("buscarpersonal",p)
+  const { data } = await supabase.rpc("buscarpersonal", p)
   return data;
 }
+
 //tabla asignaciones
 export const InsertarAsignaciones = async (p) => {
-  const {  error } = await supabase
+  const { error } = await supabase
     .from("asignarempresa")
     .insert(p)
   if (error) {
@@ -71,38 +75,34 @@ export const InsertarAsignaciones = async (p) => {
       text: "Error al insertar usuario " + error.message,
     });
   }
- 
 };
+
 //tabla permisos
 export async function InsertarPermisos(p) {
 
-  const {  error } = await supabase
+  const { error } = await supabase
     .from("permisos")
     .insert(p)
-    
+
   if (error) {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "Error al insertar permisos "+ error.message,
+      text: "Error al insertar permisos " + error.message,
       footer: '<a href="">error</a>',
     });
   }
-  
-
 }
+
 export async function MostrarPermisos(p) {
- 
   const { data, error } = await supabase
     .from("permisos")
     .select(`id, id_usuario, idmodulo, modulos(nombre)`)
     .eq("id_usuario", p.id_usuario)
-  
   return data;
-
 }
+
 export async function EliminarPermisos(p) {
- 
   const { error } = await supabase
     .from("permisos")
     .delete()
@@ -110,12 +110,9 @@ export async function EliminarPermisos(p) {
   if (error) {
     alert("Error al eliminar", error);
   }
-
 }
 
 export async function MostrarModulos() {
-  
   const { data } = await supabase.from("modulos").select();
   return data;
-
 }

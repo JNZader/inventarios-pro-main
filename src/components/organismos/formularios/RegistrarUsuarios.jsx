@@ -2,26 +2,25 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v } from "../../../styles/variables";
 import { Device } from "../../../styles/breackpoints";
-import {InputText} from "../formularios/InputText"
-import {BtnSave} from "../../moleculas/BtnSave"
+import { InputText } from "../formularios/InputText"
+import { BtnSave } from "../../moleculas/BtnSave"
 import { useForm } from "react-hook-form";
-import {ConvertirCapitalize} from "../../../utils/Conversiones"
+import { ConvertirCapitalize } from "../../../utils/Conversiones"
 import { useProductosStore } from "../../../store/ProductosStore";
 import { useEmpresaStore } from "../../../store/EmpresaStore";
 import { useMarcaStore } from "../../../store/MarcaStore";
 import { Btnfiltro } from "../../moleculas/BtnFiltro";
-import {RegistrarMarca} from "../formularios/RegistrarMarca"
+import { RegistrarMarca } from "../formularios/RegistrarMarca"
 import { useCategoriasStore } from "../../../store/CategoriasStore";
-import {RegistrarCategorias} from "../formularios/RegistrarCategorias"
-import {ContainerSelector} from "../../atomos/ContainerSelector"
-import {Selector} from "../../organismos/Selector"
-import {ListaGenerica} from "../../organismos/ListaGenerica"
+import { RegistrarCategorias } from "../formularios/RegistrarCategorias"
+import { ContainerSelector } from "../../atomos/ContainerSelector"
+import { Selector } from "../../organismos/Selector"
+import { ListaGenerica } from "../../organismos/ListaGenerica"
 import { TipoDocData } from "../../../utils/dataEstatica";
 import { TipouserData } from "../../../utils/dataEstatica";
 import { ListaModulos } from "../ListaModulos";
 import { useUsuariosStore } from "../../../store/UsuariosStore";
 import { useQuery } from "@tanstack/react-query";
-
 
 export function RegistrarUsuarios({ onClose, dataSelect, accion }) {
   const { isLoading } = useQuery({
@@ -93,8 +92,8 @@ export function RegistrarUsuarios({ onClose, dataSelect, accion }) {
   }
   useEffect(() => {
     if (accion === "Editar") {
-     setTipodoc({icono:"",descripcion:dataSelect.tipodoc})
-     setTipouser({icono:"",descripcion:dataSelect.tipouser})
+      setTipodoc({ icono: "", descripcion: dataSelect.tipodoc })
+      setTipouser({ icono: "", descripcion: dataSelect.tipouser })
     }
   }, []);
   if (isLoading) {
@@ -123,7 +122,7 @@ export function RegistrarUsuarios({ onClose, dataSelect, accion }) {
               <article>
                 <InputText icono={<v.icononombre />}>
                   <input
-                    
+
                     className={
                       accion === "Editar"
                         ? "form__field disabled"

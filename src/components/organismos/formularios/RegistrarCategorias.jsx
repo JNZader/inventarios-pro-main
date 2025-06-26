@@ -9,6 +9,7 @@ import { InputText } from "./InputText";
 import { useForm } from "react-hook-form";
 import { useEmpresaStore } from "../../../store/EmpresaStore";
 import { CirclePicker } from "react-color";
+
 export function RegistrarCategorias({ onClose, dataSelect, accion }) {
   const [currentColor, setColor] = useState("#F44336");
   const { insertarcategorias, editarcategorias } = useCategoriasStore();
@@ -18,15 +19,15 @@ export function RegistrarCategorias({ onClose, dataSelect, accion }) {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const elegirColor = (color)=>{
-setColor(color.hex)
+  const elegirColor = (color) => {
+    setColor(color.hex)
   }
   async function insertar(data) {
     if (accion === "Editar") {
       const p = {
         id: dataSelect.id,
         descripcion: ConvertirCapitalize(data.nombre),
-        color:currentColor
+        color: currentColor
       };
       await editarcategorias(p);
       onClose();
@@ -34,7 +35,7 @@ setColor(color.hex)
       const p = {
         _descripcion: ConvertirCapitalize(data.nombre),
         _idempresa: dataempresa.id,
-        _color:currentColor
+        _color: currentColor
       };
       await insertarcategorias(p);
       onClose();
@@ -80,9 +81,9 @@ setColor(color.hex)
               </InputText>
             </article>
             <article className="colorContainer">
-              <CirclePicker onChange={elegirColor} color={currentColor}/>
+              <CirclePicker onChange={elegirColor} color={currentColor} />
             </article>
-            
+
 
             <div className="btnguardarContent">
               <BtnSave

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import { useUsuariosStore } from "../store/UsuariosStore";
 import { useEmpresaStore } from "../store/EmpresaStore";
 import { useQuery } from "@tanstack/react-query";
@@ -8,29 +9,53 @@ import { Device } from "../styles/breackpoints";
 import { SpinnerLoader } from "../components/moleculas/SpinnerLoader";
 import { ErrorMolecula } from "../components/moleculas/ErrorMolecula";
 import { useState } from "react";
-import { v } from "../styles/variables"; // Importar variables para consistencia
+import { v } from "../styles/variables";
+import { RegistrarUsuarios } from "../components/organismos/formularios/RegistrarUsuarios";
 
-export function Layout({children}){
-  
-  const { mostrarUsuarios,idusuario,mostrarpermisos } = useUsuariosStore();
-  const [sidebarOpen, setSidebarOpen] = useState(true); // MEJORA: Inicia abierta por defecto en desktop
-  const {mostrarEmpresa} = useEmpresaStore()
+export function Layout({ children }) {
+  const {
+    mostrarUsuarios,
+    idusuario,
+    mostrarpermisos,
+    isEditProfileOpen,
+    closeEditProfile,
+    perfilUsuario,
+  } = useUsuariosStore();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { mostrarEmpresa } = useEmpresaStore();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
-  // Las queries de React Query se mantienen igual
-  const { data:datausuarios, isLoading, error } = useQuery({
+  const { data: datausuarios, isLoading, error } = useQuery({
     queryKey: ["mostrar usuarios"],
     queryFn: mostrarUsuarios,
   });
-  const {data:dataempresa}=useQuery({queryKey:["mostrar empresa"],queryFn:()=>mostrarEmpresa({idusaurio:idusuario}),enabled:!!datausuarios})
-  const {data:datapermisos}=useQuery({queryKey:["mostrar permisos",{id_usuario:idusuario}],queryFn:()=>mostrarpermisos({id_usuario:idusuario}),enabled:!!datausuarios})
+  const { data: dataempresa } = useQuery({
+    queryKey: ["mostrar empresa", { idusaurio: idusuario }],
+    queryFn: () => mostrarEmpresa({ idusaurio: idusuario }),
+    enabled: !!datausuarios,
+  });
+  const { data: datapermisos } = useQuery({
+    queryKey: ["mostrar permisos", { id_usuario: idusuario }],
+    queryFn: () => mostrarpermisos({ id_usuario: idusuario }),
+    enabled: !!datausuarios,
+  });
 
-  if (isLoading){
-    return <SpinnerLoader/>
+  if (isLoading) {
+    return <SpinnerLoader />;
   }
-  if(error){
-    return <ErrorMolecula mensaje={error.message}/>
+  if (error) {
+    return <ErrorMolecula mensaje={error.message} />;
   }
-    return(
+  return (
+    <>
+      {isEditProfileOpen && (
+        <RegistrarUsuarios
+          onClose={closeEditProfile}
+          dataSelect={perfilUsuario}
+          accion="Editar"
+        />
+      )}
       <Container className={sidebarOpen ? "active" : ""}>
         <section className="ContentSidebar">
           <Sidebar
@@ -41,53 +66,56 @@ export function Layout({children}){
         <section className="ContentMenuambur">
           <MenuHambur />
         </section>
-        <ContainerBody>
-            {children}
-        </ContainerBody>
+        <ContainerBody>{children}</ContainerBody>
       </Container>
-    )
+    </>
+  );
 }
 
 const Container = styled.main`
   display: grid;
   grid-template-columns: 1fr;
   background-color: ${({ theme }) => theme.bgtotal};
-  min-height: 100vh; // Asegura que el layout ocupe toda la altura de la pantalla
-  
+  min-height: 100vh;
+
   .ContentSidebar {
     display: none;
   }
+
   .ContentMenuambur {
     display: block;
-    position: fixed; // MEJORA: Fija el menú hamburguesa para que no se mueva con el scroll
+    position: fixed;
     top: 15px;
     left: 20px;
-    z-index: 101; // Se asegura que esté por encima del contenido
+    z-index: 101;
   }
 
   @media ${Device.tablet} {
-    /* MEJORA: Transición suave para la expansión/contracción de la sidebar */
-    transition: grid-template-columns 0.3s ease-in-out; 
-    grid-template-columns: ${v.sidebarWidthInitial}; /* Usa variables para el ancho */
+    transition: grid-template-columns 0.3s ease-in-out;
     &.active {
       grid-template-columns: ${v.sidebarWidth};
     }
+    grid-template-columns: ${v.sidebarWidthInitial};
+    
     .ContentSidebar {
       display: initial;
     }
+    
     .ContentMenuambur {
       display: none;
     }
   }
 `;
 
-const ContainerBody = styled.div `
+const ContainerBody = styled.div`
   grid-column: 1;
   width: 100%;
-  /* MEJORA: Añade un padding global a todas las páginas */
-  padding: ${v.lgSpacing}; 
-  
-  @media ${Device.tablet}{
+  padding: ${v.lgSpacing};
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  @media ${Device.tablet} {
     grid-column: 2;
   }
-`
+`;

@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
-export function Buscador({setBuscador,onFocus, funcion}) {
-  
-    const buscar =(e)=>{
-        setBuscador(e.target.value)
+export function Buscador({ setBuscador, onFocus, funcion }) {
+
+  const buscar = (e) => {
+    setBuscador(e.target.value)
+  }
+  function ejecutarfuncion() {
+    if (funcion) {
+      funcion()
     }
-    function ejecutarfuncion(){
-      if(funcion){
-        funcion()
-      }
-    }
+  }
   return (
-    
+
     <Container onClick={ejecutarfuncion}>
       <article className="content">
         <FaSearch className="icono" />
@@ -44,7 +44,7 @@ const Container = styled.div`
       outline: none;
       background: none;
       border: 0;
-      color: ${(props)=>props.theme.text};
+      color: ${(props) => props.theme.text};
     }
   }
 `;

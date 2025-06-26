@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import {SpinnerLoader} from "../components/moleculas/SpinnerLoader";
-import {useEmpresaStore} from "../store/EmpresaStore";
-import {useMarcaStore} from "../store/MarcaStore";
+import { SpinnerLoader } from "../components/moleculas/SpinnerLoader";
+import { useEmpresaStore } from "../store/EmpresaStore";
+import { useMarcaStore } from "../store/MarcaStore";
 import { useUsuariosStore } from "../store/UsuariosStore";
-import {BloqueoPagina} from "../components/moleculas/BloqueoPagina";
-import {UsuariosTemplate} from "../components/templates/UsuariosTemplate"
-
+import { BloqueoPagina } from "../components/moleculas/BloqueoPagina";
+import { UsuariosTemplate } from "../components/templates/UsuariosTemplate"
 
 export function Usuarios() {
   const {

@@ -7,22 +7,20 @@ import {
 export const DesplegableUser = [
   {
     text: "Mi perfil",
-    icono: <v.iconoUser/>,
+    icono: <v.iconoUser />,
     tipo: "miperfil",
   },
   {
     text: "Configuracion",
-    icono: <v.iconoSettings/>,
+    icono: <v.iconoSettings />,
     tipo: "configuracion",
   },
   {
     text: "Cerrar sesión",
-    icono: <v.iconoCerrarSesion/>,
+    icono: <v.iconoCerrarSesion />,
     tipo: "cerrarsesion",
   },
 ];
-
-
 
 //data SIDEBAR
 export const LinksArray = [
@@ -41,8 +39,9 @@ export const LinksArray = [
     icon: <v.iconoreportes />,
     to: "/reportes",
   },
- 
+
 ];
+
 export const SecondarylinksArray = [
   {
     label: "Configuración",
@@ -51,60 +50,61 @@ export const SecondarylinksArray = [
   },
 
 ];
+
 //temas
 export const TemasData = [
   {
     icono: "🌞",
     descripcion: "light",
-   
+
   },
   {
     icono: "🌚",
     descripcion: "dark",
-    
+
   },
 ];
 
 //data configuracion
-export const DataModulosConfiguracion =[
+export const DataModulosConfiguracion = [
   {
-    title:"Productos",
-    subtitle:"registra tus productos",
-    icono:"https://i.ibb.co/85zJ6yG/caja-del-paquete.png",
-    link:"/configurar/productos",
-   
-  },
-  {
-    title:"Personal",
-    subtitle:"ten el control de tu personal",
-    icono:"https://i.ibb.co/5vgZ0fX/hombre.png",
-    link:"/configurar/personal",
-   
-  },
-/*
-  {
-    title:"Tu empresa",
-    subtitle:"configura tus opciones básicas",
-    icono:"https://i.ibb.co/x7mHPgm/administracion-de-empresas.png",
-    link:"/configurar/empresa",
-    
-  },*/
-  {
-    title:"Categoria de productos",
-    subtitle:"asigna categorias a tus productos",
-    icono:"https://i.ibb.co/VYbMRLZ/categoria.png",
-    link:"/configurar/categorias",
-    
-  },
-  {
-    title:"Marca de productos",
-    subtitle:"gestiona tus marcas",
-    icono:"https://i.ibb.co/1qsbCRb/piensa-fuera-de-la-caja.png",
-    link:"/configurar/marca",
-   
-  },
+    title: "Productos",
+    subtitle: "registra tus productos",
+    icono: "https://i.ibb.co/85zJ6yG/caja-del-paquete.png",
+    link: "/configurar/productos",
 
+  },
+  {
+    title: "Personal",
+    subtitle: "ten el control de tu personal",
+    icono: "https://i.ibb.co/5vgZ0fX/hombre.png",
+    link: "/configurar/personal",
+
+  },
+  /*
+    {
+      title:"Tu empresa",
+      subtitle:"configura tus opciones básicas",
+      icono:"https://i.ibb.co/x7mHPgm/administracion-de-empresas.png",
+      link:"/configurar/empresa",
+      
+    },*/
+  {
+    title: "Categoria de productos",
+    subtitle: "asigna categorias a tus productos",
+    icono: "https://i.ibb.co/VYbMRLZ/categoria.png",
+    link: "/configurar/categorias",
+
+  },
+  {
+    title: "Marca de productos",
+    subtitle: "gestiona tus marcas",
+    icono: "https://i.ibb.co/1qsbCRb/piensa-fuera-de-la-caja.png",
+    link: "/configurar/marca",
+
+  },
 ]
+
 //tipo usuario
 export const TipouserData = [
   {
@@ -116,6 +116,7 @@ export const TipouserData = [
     icono: "👑",
   },
 ];
+
 //tipodoc
 export const TipoDocData = [
   {

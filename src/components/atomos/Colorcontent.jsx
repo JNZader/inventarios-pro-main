@@ -1,5 +1,5 @@
 import styled from "styled-components";
-export const Colorcontent =styled.div`
+export const Colorcontent = styled.div`
   justify-content: center;
   min-height: ${(props) => props.$alto};
   width: ${(props) => props.$ancho};

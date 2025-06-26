@@ -1,26 +1,42 @@
 import styled from "styled-components";
-import {DesplegableUser} from "../../utils/dataEstatica"
+import { DesplegableUser } from "../../utils/dataEstatica";
 import { useAuthStore } from "../../store/AuthStore";
-
-import {UserAuth} from "../../context/AuthContext"
+import { UserAuth } from "../../context/AuthContext";
 import { BtnCircular } from "../moleculas/BtnCircular";
-import {ListaMenuDesplegable} from "../organismos/ListaMenuDesplegable"
-import {v} from "../../styles/variables"
+import { ListaMenuDesplegable } from "../organismos/ListaMenuDesplegable";
+import { v } from "../../styles/variables";
+import { useNavigate } from "react-router-dom";
+import { useUsuariosStore } from "../../store/UsuariosStore";
+
 export function Header({ stateConfig }) {
-  const {signOut} = useAuthStore()
+  const { signOut } = useAuthStore();
   const { user } = UserAuth();
+  const navigate = useNavigate();
+
+  const { perfilUsuario, openEditProfile } = useUsuariosStore();
+
   const funcionXtipo = async (p) => {
     if (p.tipo === "cerrarsesion") {
-     
       await signOut();
+    } else if (p.tipo === "configuracion") {
+      navigate("/configurar");
+    } else if (p.tipo === "miperfil") {
+      openEditProfile();
     }
   };
+
+  const filteredDesplegableUser = DesplegableUser.filter((item) => {
+    if (item.tipo === "miperfil") {
+      return perfilUsuario?.tipouser !== "superadmin";
+    }
+    return true;
+  });
+
   return (
     <Container>
-      
       <Datauser onClick={stateConfig.setState}>
         <div className="imgContainer">
-          <img src="https://i.ibb.co/kGYgRZ8/programador.png" />
+          <img src="https://i.ibb.co/kGYgRZ8/programador.png" alt="User avatar" />
         </div>
         <BtnCircular
           icono={<v.iconocorona />}
@@ -34,12 +50,12 @@ export function Header({ stateConfig }) {
         />
         <span className="nombre">{user.email}</span>
         {stateConfig.state && (
-        <ListaMenuDesplegable
-          data={DesplegableUser}
-          top="62px"
-          funcion={(p) => funcionXtipo(p)}
-        />
-      )}
+          <ListaMenuDesplegable
+            data={filteredDesplegableUser}
+            top="62px"
+            funcion={(p) => funcionXtipo(p)}
+          />
+        )}
       </Datauser>
     </Container>
   );

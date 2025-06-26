@@ -1,32 +1,33 @@
 import styled from "styled-components";
 import { useState } from "react";
-import {Btnfiltro} from "../moleculas/Btnfiltro"
-import {Buscador} from "../organismos/Buscador"
-import {ContentFiltro} from "../atomos/ContentFiltro"
-import {Header} from "../organismos/Header"
-import {Title} from "../atomos/Title"
-import {useMarcaStore} from "../../store/MarcaStore"
-import {useProductosStore} from "../../store/ProductosStore"
-import {v} from "../../styles/variables"
-import {RegistrarProductos} from "../organismos/formularios/RegistrarProductos"
-import {TablaProductos} from "../organismos/tablas/TablaProductos"
-export function ProductosTemplate({data}) {
+import { Btnfiltro } from "../moleculas/Btnfiltro"
+import { Buscador } from "../organismos/Buscador"
+import { ContentFiltro } from "../atomos/ContentFiltro"
+import { Header } from "../organismos/Header"
+import { Title } from "../atomos/Title"
+import { useMarcaStore } from "../../store/MarcaStore"
+import { useProductosStore } from "../../store/ProductosStore"
+import { v } from "../../styles/variables"
+import { RegistrarProductos } from "../organismos/formularios/RegistrarProductos"
+import { TablaProductos } from "../organismos/tablas/TablaProductos"
+
+export function ProductosTemplate({ data }) {
   const [state, setState] = useState(false);
   const [dataSelect, setdataSelect] = useState([]);
   const [accion, setAccion] = useState("");
   const [openRegistro, SetopenRegistro] = useState(false);
-  const nuevoRegistro=()=>{
+  const nuevoRegistro = () => {
     SetopenRegistro(!openRegistro);
     setAccion("Nuevo")
     setdataSelect([])
   }
-  const {setBuscador} = useProductosStore()
+  const { setBuscador } = useProductosStore()
   return (
     <Container>
       {
-        openRegistro &&  <RegistrarProductos dataSelect={dataSelect} accion={accion} onClose={()=>SetopenRegistro(!openRegistro)}/>
+        openRegistro && <RegistrarProductos dataSelect={dataSelect} accion={accion} onClose={() => SetopenRegistro(!openRegistro)} />
       }
-     
+
       <header className="header">
         <Header
           stateConfig={{ state: state, setState: () => setState(!state) }}
@@ -37,22 +38,23 @@ export function ProductosTemplate({data}) {
           <Title>
             Productos
           </Title>
-           <Btnfiltro funcion={nuevoRegistro} bgcolor="#f6f3f3"
+          <Btnfiltro funcion={nuevoRegistro} bgcolor="#f6f3f3"
             textcolor="#353535"
-            icono={<v.agregar/>}/>
+            icono={<v.agregar />} />
         </ContentFiltro>
-       
+
       </section>
       <section className="area2">
-        <Buscador setBuscador={setBuscador}/>
+        <Buscador setBuscador={setBuscador} />
       </section>
       <section className="main">
         <TablaProductos data={data} SetopenRegistro={SetopenRegistro}
-        setdataSelect={setdataSelect} setAccion={setAccion}/>
+          setdataSelect={setdataSelect} setAccion={setAccion} />
       </section>
     </Container>
   );
 }
+
 const Container = styled.div`
   min-height: 100vh;
   width: 100%;

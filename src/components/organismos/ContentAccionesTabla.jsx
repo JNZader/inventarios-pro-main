@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import {AccionTabla} from "../atomos/AccionTabla"
-import {v} from "../../styles/variables"
+import { AccionTabla } from "../atomos/AccionTabla"
+import { v } from "../../styles/variables"
+
 export function ContentAccionesTabla({ funcionEditar, funcionEliminar }) {
   return (
     <Container>
@@ -10,7 +11,7 @@ export function ContentAccionesTabla({ funcionEditar, funcionEliminar }) {
         color="#7d7d7d"
         icono={<v.iconeditarTabla />}
       />
-       <AccionTabla
+      <AccionTabla
         funcion={funcionEliminar}
         fontSize="18px"
         color="#f76e8e"
@@ -27,5 +28,4 @@ const Container = styled.div`
  @media (max-width: 48em) {
     justify-content:end;
   }
-
 `;

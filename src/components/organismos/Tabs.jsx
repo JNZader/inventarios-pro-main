@@ -2,33 +2,33 @@ import { useState } from "react";
 import styled from "styled-components";
 import { v } from "../../styles/variables";
 import { Device } from "../../styles/breackpoints";
-import {TablaKardex} from "../organismos/tablas/TablaKardex"
+import { TablaKardex } from "../organismos/tablas/TablaKardex"
 
-export function Tabs({data}){
+export function Tabs({ data }) {
     const [activeTab, setactiveTab] = useState(0);
     const handleClick = (index) => {
         setactiveTab(index)
     }
-    return(<Container className="container" activeTab={`${activeTab}00%`}>
-            <ul className="tabs">
-                <li className={activeTab == 0 ? "active" : ""} onClick={()=> handleClick(0) }>
-                    {<v.iconopie/>}
-                    Kardex
+    return (<Container className="container" activeTab={`${activeTab}00%`}>
+        <ul className="tabs">
+            <li className={activeTab == 0 ? "active" : ""} onClick={() => handleClick(0)}>
+                {<v.iconopie />}
+                Kardex
 
-                </li>
-               
-                <span className="glider"></span>
-            </ul>
-            <div className="tab-content">
-                {activeTab===0 && <TablaKardex data={data}/>}
-                {activeTab===1 && <span>tab2</span>}
-                {activeTab===2 && <span>tab3</span>}
-            </div>
-        </Container>
+            </li>
+
+            <span className="glider"></span>
+        </ul>
+        <div className="tab-content">
+            {activeTab === 0 && <TablaKardex data={data} />}
+            {activeTab === 1 && <span>tab2</span>}
+            {activeTab === 2 && <span>tab3</span>}
+        </div>
+    </Container>
     )
 }
 
-const Container = styled.div `
+const Container = styled.div`
 position: relative;
 display: flex;
 align-items: center;
@@ -61,8 +61,7 @@ height: 100%;
         font-weight: 500;
         border-radius: 99px;
         cursor: pointer;
-        transition: color 0.15s ease-in;
-    
+        transition: color 0.15s ease-in;    
     }
 
     .glider{
@@ -83,20 +82,14 @@ height: 100%;
               height: 4px;
             width: 180px;
             bottom: 0;
-            top: 100%;
-        
-        }
-    
+            top: 100%;        
+        }    
     }
-
 }
 
 .tab-content {
     margin-top: 20px;
     height: 100%;
     width: 100%;
-
 }
-
-
 `

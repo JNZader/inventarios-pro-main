@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { v } from "../../../styles/variables";
 import { BtnSave } from "../../moleculas/BtnSave";
+import { useAuthStore } from "../../../store/AuthStore";
 
 export function SidebarCard() {
-  
+  const { signOut } = useAuthStore();
   return (
     <Container>
       <span className="icon">{<v.iconoayuda />}</span>
@@ -12,8 +13,11 @@ export function SidebarCard() {
         <div className="circle2"></div>
         <h3>Cerrar sesión</h3>
         <div className="contentBtn">
-          <BtnSave titulo="Cerrar ..." bgcolor="#f8f2fd"  />
-        </div>
+          <BtnSave
+            titulo="Cerrar ..."
+            bgcolor="#f8f2fd"
+            funcion={signOut}
+          />        </div>
       </div>
     </Container>
   );

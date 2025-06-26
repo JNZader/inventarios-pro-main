@@ -1,23 +1,25 @@
 import styled from "styled-components";
 import { useUsuariosStore } from "../../store/UsuariosStore";
 import { useEffect, useState } from "react";
+
 export function ListaModulos({ checkboxs, setCheckboxs, accion }) {
-  const { datamodulos,datapermisosEdit } = useUsuariosStore();
+  const { datamodulos, datapermisosEdit } = useUsuariosStore();
   const [isChecked, setisChecked] = useState(true);
+
   useEffect(() => {
     if (accion == "Editar") {
-        let allDocs = [];
-        datamodulos.map((element)=>{
-            const statePermiso=datapermisosEdit?.some((objeto)=>objeto.modulos.nombre.includes(element.nombre))
-            if(statePermiso){
-                allDocs.push({...element,check: true})
-            }
-            else{
-                allDocs.push({...element,check: false})
-            }
+      let allDocs = [];
+      datamodulos.map((element) => {
+        const statePermiso = datapermisosEdit?.some((objeto) => objeto.modulos.nombre.includes(element.nombre))
+        if (statePermiso) {
+          allDocs.push({ ...element, check: true })
+        }
+        else {
+          allDocs.push({ ...element, check: false })
+        }
 
-        })
-        setCheckboxs(allDocs)
+      })
+      setCheckboxs(allDocs)
 
     } else {
       setCheckboxs(datamodulos);
@@ -35,11 +37,13 @@ export function ListaModulos({ checkboxs, setCheckboxs, accion }) {
     });
     console.log(checkboxs);
   };
+
   const seleccionar = (e) => {
     let check = e.target.checked;
     setisChecked(check);
     console.log(check);
   };
+
   return (
     <Container>
       {checkboxs?.map((item, index) => {
@@ -57,6 +61,7 @@ export function ListaModulos({ checkboxs, setCheckboxs, accion }) {
     </Container>
   );
 }
+
 const Container = styled.div`
  display: flex;
   flex-direction: column;

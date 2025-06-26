@@ -2,20 +2,21 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v } from "../../../styles/variables";
 import { Device } from "../../../styles/breackpoints";
-import {InputText} from "../formularios/InputText"
-import {BtnSave} from "../../moleculas/BtnSave"
+import { InputText } from "../formularios/InputText"
+import { BtnSave } from "../../moleculas/BtnSave"
 import { useForm } from "react-hook-form";
-import {ConvertirCapitalize} from "../../../utils/Conversiones"
+import { ConvertirCapitalize } from "../../../utils/Conversiones"
 import { useProductosStore } from "../../../store/ProductosStore";
 import { useEmpresaStore } from "../../../store/EmpresaStore";
 import { useMarcaStore } from "../../../store/MarcaStore";
 import { Btnfiltro } from "../../moleculas/Btnfiltro";
-import {RegistrarMarca} from "../formularios/RegistrarMarca"
+import { RegistrarMarca } from "../formularios/RegistrarMarca"
 import { useCategoriasStore } from "../../../store/CategoriasStore";
-import {RegistrarCategorias} from "../formularios/RegistrarCategorias"
-import {ContainerSelector} from "../../atomos/ContainerSelector"
-import {Selector} from "../../organismos/Selector"
-import {ListaGenerica} from "../../organismos/ListaGenerica"
+import { RegistrarCategorias } from "../formularios/RegistrarCategorias"
+import { ContainerSelector } from "../../atomos/ContainerSelector"
+import { Selector } from "../../organismos/Selector"
+import { ListaGenerica } from "../../organismos/ListaGenerica"
+
 export function RegistrarProductos({ onClose, dataSelect, accion }) {
   const { insertarproductos, editarproductos } = useProductosStore();
   const { dataempresa } = useEmpresaStore();
@@ -76,8 +77,8 @@ export function RegistrarProductos({ onClose, dataSelect, accion }) {
   }
   useEffect(() => {
     if (accion === "Editar") {
-      selectMarca({id:dataSelect.idmarca,descripcion:dataSelect.marca})
-      selectcategorias({id:dataSelect.id_categoria,descripcion:dataSelect.categoria})
+      selectMarca({ id: dataSelect.idmarca, descripcion: dataSelect.marca })
+      selectcategorias({ id: dataSelect.id_categoria, descripcion: dataSelect.categoria })
     }
   }, []);
   return (

@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import {SpinnerLoader} from "../components/moleculas/SpinnerLoader"
+import { SpinnerLoader } from "../components/moleculas/SpinnerLoader"
 import { useEmpresaStore } from "../store/EmpresaStore";
 import { useCategoriasStore } from "../store/CategoriasStore";
 import { CategoriasTemplate } from "../components/templates/CategoriasTemplate";
 import { useUsuariosStore } from "../store/UsuariosStore";
-import {BloqueoPagina} from "../components/moleculas/BloqueoPagina"
+import { BloqueoPagina } from "../components/moleculas/BloqueoPagina"
 
 export function Categorias() {
   const { datapermisos } = useUsuariosStore();

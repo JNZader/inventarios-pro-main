@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { v } from "../../../styles/variables";
-import {InputText} from "./InputText"
+import { InputText } from "./InputText"
 import { BtnSave } from "../../moleculas/BtnSave";
 import { useMarcaStore } from "../../../store/MarcaStore";
-import {ConvertirCapitalize} from "../../../utils/Conversiones"
+import { ConvertirCapitalize } from "../../../utils/Conversiones"
 import { useForm } from "react-hook-form";
 import { useEmpresaStore } from "../../../store/EmpresaStore";
+
 export function RegistrarMarca({ onClose, dataSelect, accion }) {
   const { insertarMarca, editarMarca } = useMarcaStore();
   const { dataempresa } = useEmpresaStore();
@@ -19,13 +20,13 @@ export function RegistrarMarca({ onClose, dataSelect, accion }) {
     if (accion === "Editar") {
       const p = {
         id: dataSelect.id,
-        descripcion:ConvertirCapitalize( data.nombre),
+        descripcion: ConvertirCapitalize(data.nombre),
       };
       await editarMarca(p);
       onClose();
     } else {
       const p = {
-        _descripcion:ConvertirCapitalize( data.nombre),
+        _descripcion: ConvertirCapitalize(data.nombre),
         _idempresa: dataempresa.id,
       };
       await insertarMarca(p);

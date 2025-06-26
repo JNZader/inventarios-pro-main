@@ -3,39 +3,40 @@ import { Header } from "../organismos/Header";
 import { TablaMarca } from "../organismos/tablas/TablaMarca";
 import { Title } from "../atomos/Title";
 import { useMarcaStore } from "../../store/MarcaStore";
-import {v} from "../../styles/variables"
+import { v } from "../../styles/variables"
 import { Btnfiltro } from "../moleculas/BtnFiltro";
-import {ContentFiltro} from "../atomos/ContentFiltro"
-import {Buscador} from "../organismos/Buscador"
+import { ContentFiltro } from "../atomos/ContentFiltro"
+import { Buscador } from "../organismos/Buscador"
 import { RegistrarKardex } from "../organismos/formularios/RegistrarKardex";
 import { useState } from "react";
-import {TablaKardex} from "../organismos/tablas/TablaKardex"
+import { TablaKardex } from "../organismos/tablas/TablaKardex"
 import { BtnSave } from "../moleculas/BtnSave";
-import {Tabs} from "../organismos/Tabs"
+import { Tabs } from "../organismos/Tabs"
 import { useKardexStore } from "../../store/KardexStore";
-export function KardexTemplate({data}) {
+
+export function KardexTemplate({ data }) {
   const [state, setState] = useState(false);
   const [dataSelect, setdataSelect] = useState([]);
   const [accion, setAccion] = useState("");
   const [openRegistro, SetopenRegistro] = useState(false);
   const [tipo, setTipo] = useState("");
-  const nuevaentrada=()=>{
+  const nuevaentrada = () => {
     SetopenRegistro(true);
     setTipo("entrada")
 
   }
-  const nuevasalida=()=>{
+  const nuevasalida = () => {
     SetopenRegistro(true);
     setTipo("salida")
 
   }
-  const {setBuscador} = useKardexStore()
+  const { setBuscador } = useKardexStore()
   return (
     <Container>
       {
-        openRegistro &&  <RegistrarKardex tipo={tipo} dataSelect={dataSelect} accion={accion} onClose={()=>SetopenRegistro(!openRegistro)}/>
+        openRegistro && <RegistrarKardex tipo={tipo} dataSelect={dataSelect} accion={accion} onClose={() => SetopenRegistro(!openRegistro)} />
       }
-     
+
       <header className="header">
         <Header
           stateConfig={{ state: state, setState: () => setState(!state) }}
@@ -46,18 +47,18 @@ export function KardexTemplate({data}) {
           <Title>
             Kardex
           </Title>
-           <BtnSave bgcolor="#52de65" titulo="+ 
-           Entrada" funcion={nuevaentrada}/>
-             <BtnSave bgcolor="#fb6661" titulo="- 
-           Salida" funcion={nuevasalida}/>
+          <BtnSave bgcolor="#52de65" titulo="+ 
+           Entrada" funcion={nuevaentrada} />
+          <BtnSave bgcolor="#fb6661" titulo="- 
+           Salida" funcion={nuevasalida} />
         </ContentFiltro>
-       
+
       </section>
       <section className="area2">
-        <Buscador setBuscador={setBuscador}/>
+        <Buscador setBuscador={setBuscador} />
       </section>
       <section className="main">
-        <Tabs data={data}/>
+        <Tabs data={data} />
       </section>
     </Container>
   );
